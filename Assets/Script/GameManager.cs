@@ -73,19 +73,27 @@ public class GameManager : MonoBehaviour
         File.WriteAllText(path + ID + ".json", json);
 
     }
-    public void LoadUserData(string ID)
+    public UserData LoadUserData(string ID, string password)
     {
         if (!File.Exists(path + ID + ".json"))
         {
             Debug.Log("No UserData exist.");
-            return;
+            return null;
         }
         else
         {
             string loadJson = File.ReadAllText(path + ID + ".json");
             UserData loadUserData = JsonUtility.FromJson<UserData>(loadJson);
+
+            if (loadUserData.password != password)
+            {
+                Debug.Log("Password incorrect.");
+                return null;
+            }
+
             UpdateCurrentUserData(loadUserData);
-        }        
+            return loadUserData;
+        }
     }
     public void SaveIfDirty()
     {
@@ -104,11 +112,10 @@ public class GameManager : MonoBehaviour
             SaveIfDirty();
         }
     }
-    public bool Login(string ID, string password) // ¹Ì¿Ï
+    public bool TryLogin(string ID, string password) 
     {
-        if (/*LoadUserData(ID, password) == null*/ true)
+        if (LoadUserData(ID, password) != null)
         {
-            LoadUserData(ID);
             _login = true;
 
             OnLogin();
@@ -116,7 +123,6 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            OnLogout();
             return false;
         }
     }

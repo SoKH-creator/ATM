@@ -92,7 +92,7 @@ public class PopupBank : MonoBehaviour
 
     public void LoginBtn()
     {
-        if (!GameManager.Instance.Login(
+        if (!GameManager.Instance.TryLogin(
             login_ID_InputField.text, login_PS_InputField.text))
         {
             ActivateIncorrectInfoErrorUI();
