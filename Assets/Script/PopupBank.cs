@@ -1,0 +1,169 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class PopupBank : MonoBehaviour
+{
+    public GameObject defaultUI;
+    public GameObject userInfoUI;
+    public GameObject depositeUI;
+    public GameObject withdrawUI;
+    public GameObject lowMoneyErrorUI;
+    public GameObject loginUI;
+    public GameObject signUpUI;
+    public GameObject incorrectInfoErrorUI;
+
+    public TextMeshProUGUI signUpErrorText;
+
+    public TMP_InputField login_ID_InputField;
+    public TMP_InputField login_PS_InputField;
+    public TMP_InputField signUp_ID_InputField;
+    public TMP_InputField signUp_Name_InputField;
+    public TMP_InputField signUp_PS_InputField;
+    public TMP_InputField signUp_PSConfirm_InputField;
+    public TMP_InputField deposite_InputField;
+    public TMP_InputField withdraw_InputField;
+    
+    private int depositeCustomNum;
+    private int withdrawCustomNum;
+
+    public void SetDepositeUI()
+    {
+        defaultUI.SetActive(false);
+        depositeUI.SetActive(true);
+    }
+
+    public void SetWithdrawUI()
+    {
+        defaultUI.SetActive(false);
+        withdrawUI.SetActive(true);
+    }
+
+    public void SetDefaultUI()
+    {
+        depositeUI.SetActive(false);
+        withdrawUI.SetActive(false);
+        defaultUI.SetActive(true);
+    }
+
+    public void DepositeBtn(int num)
+    {
+        if (GameManager.Instance.TryDeposit(num)) return;
+        else ActivatePopupError();
+    }
+
+    public void WithdrawBtn(int num)
+    {
+        if (GameManager.Instance.TryWithdraw(num)) return;
+        else ActivatePopupError();
+    }
+
+    public void GetDepositeCustom()
+    {
+        if (!Int32.TryParse(deposite_InputField.text, out int result))
+            return;
+
+        depositeCustomNum = result;
+    }
+
+    public void GetWithdrawCustom()
+    {
+        if (!Int32.TryParse(withdraw_InputField.text, out int result))
+            return;
+
+        withdrawCustomNum = result;
+    }
+
+    public void DepositeCustom() => DepositeBtn(depositeCustomNum);
+    public void WithdrawCustom() => WithdrawBtn(withdrawCustomNum);
+
+    public void ActivatePopupError()
+    {
+        lowMoneyErrorUI.SetActive(true);
+    }
+
+    public void DeactivatePopupError()
+    {
+        lowMoneyErrorUI.SetActive(false);
+    }
+
+    public void LoginBtn()
+    {
+        if (!GameManager.Instance.Login(
+            login_ID_InputField.text, login_PS_InputField.text))
+            return;
+
+        loginUI.SetActive(false);
+        defaultUI.SetActive(true);
+        userInfoUI.SetActive(true);
+    }
+
+    public void SignUpBtn()
+    {
+        if (SignUpError())
+        {
+            ActivateSignUpErrorUI();
+            return;
+        }
+
+        GameManager.Instance.SignUp(
+            signUp_Name_InputField.text, signUp_ID_InputField.text, signUp_PS_InputField.text);
+
+        // set UI
+        DeactivateSignUpUI();
+        loginUI.SetActive(false);
+        defaultUI.SetActive(true);
+        userInfoUI.SetActive(true);
+    }
+   
+    public void ActivateSignUpUI()
+    {
+        signUpUI.SetActive(true);
+    }
+
+    public void DeactivateSignUpUI()
+    {
+        signUpUI.SetActive(false);
+    }
+
+    public void ActivateSignUpErrorUI()
+    {
+        incorrectInfoErrorUI.SetActive(true);
+    }
+
+    public void DeactivateSignUpErrorUI()
+    {
+        incorrectInfoErrorUI.SetActive(false);
+    }
+        
+    private bool SignUpError()
+    {
+        if (signUp_ID_InputField.text == "")
+        {
+            signUpErrorText.text = "ID를 입력해주세요.";
+            return true;
+        }
+        else if (signUp_Name_InputField.text == "")
+        {
+            signUpErrorText.text = "이름을 입력해주세요.";
+            return true;
+        }
+        else if (signUp_PS_InputField.text == "")
+        {
+            signUpErrorText.text = "비밀번호를 입력해주세요.";
+            return true;
+        }
+        else if (signUp_PS_InputField.text != signUp_PSConfirm_InputField.text)
+        {
+            signUpErrorText.text = "비밀번호가 일치하지 않습니다.";
+            return true;
+        }
+        
+        signUpErrorText.text = "";
+        return false;
+    }
+    
+}
