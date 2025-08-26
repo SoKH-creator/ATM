@@ -8,8 +8,8 @@ Unity에서 `SampleScene` 실행해서 테스트ID(PS:1234)로 로그인하거�
 - 잔액/현금 보유 표시, 입금 / 출금
 - 자동 저장: 로그인 상태에서 1분마다, 앱 종료 시 저장
 
->계정 생성 시 현금은 115,000, 잔액은 85,000 으로 자동 생성됩니다.
->에디터에서 테스트할 때 저장 파일은 `GameManager.Awake()`에서 `Application.dataPath + "/Data/"`를 사용하도록 되어있습니다.
+>계정 생성 시 현금은 115,000, 잔액은 85,000 으로 자동 생성됩니다.<br/>
+>에디터에서 테스트할 때 저장 파일은 `GameManager.Awake()`에서 `Application.dataPath + "/Data/"`를 사용하도록 되어있습니다.<br/>
 >실 빌드에서는 `Application.persistentDataPath + "/Data/"`로 저장됩니다.
 ----
 
