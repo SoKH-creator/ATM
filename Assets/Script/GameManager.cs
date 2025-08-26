@@ -58,7 +58,6 @@ public class GameManager : MonoBehaviour
 
 
     // ====UserData Methods====
-
     public void UpdateCurrentUserData(UserData saveData)
     {
         currentUserData = saveData;

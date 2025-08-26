@@ -11,56 +11,60 @@ public class PopupBank : MonoBehaviour
     public GameObject userInfoUI;
     public GameObject depositeUI;
     public GameObject withdrawUI;
+    public GameObject remitUI;
     public GameObject lowMoneyErrorUI;
     public GameObject loginUI;
     public GameObject signUpUI;
     public GameObject incorrectInfoErrorUI;
 
-    public TextMeshProUGUI signUpErrorText;
-
+    public TMP_InputField deposite_InputField;
+    public TMP_InputField withdraw_InputField;
     public TMP_InputField login_ID_InputField;
     public TMP_InputField login_PS_InputField;
     public TMP_InputField signUp_ID_InputField;
     public TMP_InputField signUp_Name_InputField;
     public TMP_InputField signUp_PS_InputField;
     public TMP_InputField signUp_PSConfirm_InputField;
-    public TMP_InputField deposite_InputField;
-    public TMP_InputField withdraw_InputField;
-    
+
+    public TextMeshProUGUI signUpErrorText;
+
     private int depositeCustomNum;
     private int withdrawCustomNum;
 
-    public void SetDepositeUI()
-    {
-        defaultUI.SetActive(false);
-        depositeUI.SetActive(true);
-    }
-
-    public void SetWithdrawUI()
-    {
-        defaultUI.SetActive(false);
-        withdrawUI.SetActive(true);
-    }
-
+    // ====ATM UI Set====
     public void SetDefaultUI()
     {
         depositeUI.SetActive(false);
         withdrawUI.SetActive(false);
         defaultUI.SetActive(true);
     }
+    public void SetDepositeUI()
+    {
+        defaultUI.SetActive(false);
+        depositeUI.SetActive(true);
+    }
+    public void SetWithdrawUI()
+    {
+        defaultUI.SetActive(false);
+        withdrawUI.SetActive(true);
+    }
+    public void SetRemitUI()
+    {
+        defaultUI.SetActive(false);
+        remitUI.SetActive(true);
+    }
 
-    public void DepositeBtn(int num)
+    // ====Deposit and Withdraw====
+    public void DepositBtn(int num)
     {
         if (GameManager.Instance.TryDeposit(num)) return;
         else ActivateLowMoneyError();
     }
-
     public void WithdrawBtn(int num)
     {
         if (GameManager.Instance.TryWithdraw(num)) return;
         else ActivateLowMoneyError();
     }
-
     public void GetDepositeCustom()
     {
         if (!Int32.TryParse(deposite_InputField.text, out int result))
@@ -68,7 +72,6 @@ public class PopupBank : MonoBehaviour
 
         depositeCustomNum = result;
     }
-
     public void GetWithdrawCustom()
     {
         if (!Int32.TryParse(withdraw_InputField.text, out int result))
@@ -76,20 +79,12 @@ public class PopupBank : MonoBehaviour
 
         withdrawCustomNum = result;
     }
-
-    public void DepositeCustom() => DepositeBtn(depositeCustomNum);
+    public void DepositeCustom() => DepositBtn(depositeCustomNum);
     public void WithdrawCustom() => WithdrawBtn(withdrawCustomNum);
 
-    public void ActivateLowMoneyError()
-    {
-        lowMoneyErrorUI.SetActive(true);
-    }
+    // ====Remit====
 
-    public void DeactivateLowMoneyError()
-    {
-        lowMoneyErrorUI.SetActive(false);
-    }
-
+    // ====Login and Sign up====
     public void LoginBtn()
     {
         if (!GameManager.Instance.TryLogin(
@@ -103,7 +98,6 @@ public class PopupBank : MonoBehaviour
         defaultUI.SetActive(true);
         userInfoUI.SetActive(true);
     }
-
     public void SignUpBtn()
     {
         if (SignUpError())
@@ -121,27 +115,6 @@ public class PopupBank : MonoBehaviour
         defaultUI.SetActive(true);
         userInfoUI.SetActive(true);
     }
-   
-    public void ActivateSignUpUI()
-    {
-        signUpUI.SetActive(true);
-    }
-
-    public void DeactivateSignUpUI()
-    {
-        signUpUI.SetActive(false);
-    }
-
-    public void ActivateIncorrectInfoErrorUI()
-    {
-        incorrectInfoErrorUI.SetActive(true);
-    }
-
-    public void DeactivateIncorrectInfoErrorUI()
-    {
-        incorrectInfoErrorUI.SetActive(false);
-    }
-        
     private bool SignUpError()
     {
         if (signUp_ID_InputField.text == "")
@@ -164,9 +137,34 @@ public class PopupBank : MonoBehaviour
             signUpErrorText.text = "비밀번호가 일치하지 않습니다.";
             return true;
         }
-        
+
         signUpErrorText.text = "";
         return false;
     }
-    
+    public void ActivateSignUpUI()
+    {
+        signUpUI.SetActive(true);
+    }
+    public void DeactivateSignUpUI()
+    {
+        signUpUI.SetActive(false);
+    }
+
+    // ====Error UI=====
+    public void ActivateLowMoneyError()
+    {
+        lowMoneyErrorUI.SetActive(true);
+    }
+    public void DeactivateLowMoneyError()
+    {
+        lowMoneyErrorUI.SetActive(false);
+    }
+    public void ActivateIncorrectInfoErrorUI()
+    {
+        incorrectInfoErrorUI.SetActive(true);
+    }
+    public void DeactivateIncorrectInfoErrorUI()
+    {
+        incorrectInfoErrorUI.SetActive(false);
+    }
 }
