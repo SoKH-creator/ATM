@@ -36,8 +36,11 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
+#if UNITY_EDITOR
+        path = Application.dataPath + "/Data/";
+#else
         path = Application.persistentDataPath + "/Data/";
+#endif
     }
     private void Start()
     {
@@ -64,7 +67,6 @@ public class GameManager : MonoBehaviour
     }
     public void SaveUserData(string ID, UserData saveData)
     {
-        
         if (!Directory.Exists(path))
             Directory.CreateDirectory(path);
 
@@ -72,6 +74,7 @@ public class GameManager : MonoBehaviour
 
         File.WriteAllText(path + ID + ".json", json);
 
+        Debug.Log($"Save User Data {ID}.json in {path}");
     }
     public UserData LoadUserData(string ID, string password)
     {
