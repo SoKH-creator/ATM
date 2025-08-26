@@ -83,6 +83,10 @@ public class PopupBank : MonoBehaviour
     public void WithdrawCustom() => WithdrawBtn(withdrawCustomNum);
 
     // ====Remit====
+    public void RemitBtn()
+    {
+
+    }
 
     // ====Login and Sign up====
     public void LoginBtn()
