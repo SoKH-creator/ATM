@@ -52,13 +52,13 @@ public class PopupBank : MonoBehaviour
     public void DepositeBtn(int num)
     {
         if (GameManager.Instance.TryDeposit(num)) return;
-        else ActivatePopupError();
+        else ActivateLowMoneyError();
     }
 
     public void WithdrawBtn(int num)
     {
         if (GameManager.Instance.TryWithdraw(num)) return;
-        else ActivatePopupError();
+        else ActivateLowMoneyError();
     }
 
     public void GetDepositeCustom()
@@ -80,12 +80,12 @@ public class PopupBank : MonoBehaviour
     public void DepositeCustom() => DepositeBtn(depositeCustomNum);
     public void WithdrawCustom() => WithdrawBtn(withdrawCustomNum);
 
-    public void ActivatePopupError()
+    public void ActivateLowMoneyError()
     {
         lowMoneyErrorUI.SetActive(true);
     }
 
-    public void DeactivatePopupError()
+    public void DeactivateLowMoneyError()
     {
         lowMoneyErrorUI.SetActive(false);
     }
@@ -94,8 +94,11 @@ public class PopupBank : MonoBehaviour
     {
         if (!GameManager.Instance.Login(
             login_ID_InputField.text, login_PS_InputField.text))
+        {
+            ActivateIncorrectInfoErrorUI();
             return;
-
+        }
+            
         loginUI.SetActive(false);
         defaultUI.SetActive(true);
         userInfoUI.SetActive(true);
@@ -105,7 +108,7 @@ public class PopupBank : MonoBehaviour
     {
         if (SignUpError())
         {
-            ActivateSignUpErrorUI();
+            ActivateIncorrectInfoErrorUI();
             return;
         }
 
@@ -129,12 +132,12 @@ public class PopupBank : MonoBehaviour
         signUpUI.SetActive(false);
     }
 
-    public void ActivateSignUpErrorUI()
+    public void ActivateIncorrectInfoErrorUI()
     {
         incorrectInfoErrorUI.SetActive(true);
     }
 
-    public void DeactivateSignUpErrorUI()
+    public void DeactivateIncorrectInfoErrorUI()
     {
         incorrectInfoErrorUI.SetActive(false);
     }

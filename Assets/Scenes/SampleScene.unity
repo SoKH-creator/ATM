@@ -4571,7 +4571,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2134796160}
         m_TargetAssemblyTypeName: PopupBank, Assembly-CSharp
-        m_MethodName: DeactivateSignUpErrorUI
+        m_MethodName: DeactivateIncorrectInfoErrorUI
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12751,7 +12751,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2134796160}
         m_TargetAssemblyTypeName: PopupBank, Assembly-CSharp
-        m_MethodName: DeactivatePopupError
+        m_MethodName: DeactivateLowMoneyError
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
