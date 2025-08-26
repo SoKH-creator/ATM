@@ -39,6 +39,7 @@ public class PopupBank : MonoBehaviour
     {
         depositeUI.SetActive(false);
         withdrawUI.SetActive(false);
+        remitUI.SetActive(false);
         defaultUI.SetActive(true);
     }
     public void SetDepositeUI()
@@ -117,6 +118,12 @@ public class PopupBank : MonoBehaviour
     // ====Login and Sign up====
     public void LoginBtn()
     {
+        if (LoginError())
+        {
+            ActivateIncorrectInfoErrorUI();
+            return;
+        }
+        
         if (!GameManager.Instance.TryLogin(
             login_ID_InputField.text, login_PS_InputField.text))
         {
@@ -144,6 +151,12 @@ public class PopupBank : MonoBehaviour
         loginUI.SetActive(false);
         defaultUI.SetActive(true);
         userInfoUI.SetActive(true);
+    }
+    private bool LoginError()
+    {
+        if (login_ID_InputField.text == "") return true;
+        else if (login_PS_InputField.text == "") return true;
+        else return false;
     }
     private bool SignUpError()
     {

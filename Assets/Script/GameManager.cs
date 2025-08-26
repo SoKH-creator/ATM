@@ -205,11 +205,21 @@ public class GameManager : MonoBehaviour
     // ====Remit====
     public int TryRemit(string ID, string amount)
     {
-        UserData loadUserData = LoadUserData(ID);
+        UserData fromUserData = currentUserData;
+        UserData toUserData = LoadUserData(ID);
 
-        if (loadUserData == null) return 1;
-        else if (loadUserData.balance < int.Parse(amount)) return 2;
-        else return 3;
+        if (toUserData == null) return 1;
+        else if (fromUserData.balance < int.Parse(amount)) return 2;
+        else 
+        {
+            fromUserData.balance -= int.Parse(amount);
+            toUserData.balance += int.Parse(amount);
+
+            UpdateCurrentUserData(fromUserData);
+            SaveUserData(ID, toUserData);
+
+            return 3;
+        }
     }
 
     // ====Utile====
