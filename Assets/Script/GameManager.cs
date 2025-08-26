@@ -97,6 +97,17 @@ public class GameManager : MonoBehaviour
             return loadUserData;
         }
     }
+    public UserData LoadUserData(string ID)
+    {
+        if (!File.Exists(path + ID + ".json")) return null;
+        else
+        {
+            string loadJson = File.ReadAllText(path + ID + ".json");
+            UserData loadUserData = JsonUtility.FromJson<UserData>(loadJson);
+
+            return loadUserData;
+        }
+    }
     public void SaveIfDirty()
     {
         if (!_login || currentUserData == null) return;
@@ -114,6 +125,8 @@ public class GameManager : MonoBehaviour
             SaveIfDirty();
         }
     }
+
+    // ====Login and Sing Up====
     public bool TryLogin(string ID, string password) 
     {
         if (LoadUserData(ID, password) != null)
@@ -152,12 +165,6 @@ public class GameManager : MonoBehaviour
 
         OnLogin();
     }
-    private void UIRefresh()
-    {
-        balanceText.text = currentUserData.balance.ToString("N0");
-        cashText.text = currentUserData.cash.ToString("N0");
-        userNameText.text = currentUserData.name.ToString();
-    }
 
     // ====Deposite and Withdraw====
     public bool TryDeposit(int num)
@@ -195,5 +202,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // ====Remit====
+    public int TryRemit(string ID, string amount)
+    {
+        UserData loadUserData = LoadUserData(ID);
 
+        if (loadUserData == null) return 1;
+        else if (loadUserData.balance < int.Parse(amount)) return 2;
+        else return 3;
+    }
+
+    // ====Utile====
+    private void UIRefresh()
+    {
+        balanceText.text = currentUserData.balance.ToString("N0");
+        cashText.text = currentUserData.cash.ToString("N0");
+        userNameText.text = currentUserData.name.ToString();
+    }
 }

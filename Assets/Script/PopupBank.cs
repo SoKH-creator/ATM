@@ -12,13 +12,16 @@ public class PopupBank : MonoBehaviour
     public GameObject depositeUI;
     public GameObject withdrawUI;
     public GameObject remitUI;
-    public GameObject lowMoneyErrorUI;
     public GameObject loginUI;
     public GameObject signUpUI;
+    public GameObject lowMoneyErrorUI;
     public GameObject incorrectInfoErrorUI;
+    public GameObject noIDErrorUI;
 
     public TMP_InputField deposite_InputField;
     public TMP_InputField withdraw_InputField;
+    public TMP_InputField remit_ID_InputField;
+    public TMP_InputField remit_Amount_InputField;
     public TMP_InputField login_ID_InputField;
     public TMP_InputField login_PS_InputField;
     public TMP_InputField signUp_ID_InputField;
@@ -85,7 +88,30 @@ public class PopupBank : MonoBehaviour
     // ====Remit====
     public void RemitBtn()
     {
+        if (RemitError())
+        {
+            ActivateIncorrectInfoErrorUI();
+            return;
+        }
 
+        switch(GameManager.Instance.TryRemit(
+            remit_ID_InputField.text, remit_Amount_InputField.text))
+        {
+            case 1:
+                ActivateNoIDError();
+                return;
+            case 2:
+                ActivateLowMoneyError();
+                return;
+            case 3:                
+                return;
+        }
+    }
+    private bool RemitError()
+    {
+        if (remit_ID_InputField.text == "") return true;
+        else if (remit_Amount_InputField.text == "") return true;
+        else return false;
     }
 
     // ====Login and Sign up====
@@ -170,5 +196,13 @@ public class PopupBank : MonoBehaviour
     public void DeactivateIncorrectInfoErrorUI()
     {
         incorrectInfoErrorUI.SetActive(false);
+    }
+    public void ActivateNoIDError()
+    {
+        noIDErrorUI.SetActive(true);
+    }
+    public void DeactivateNoIDError()
+    {
+        noIDErrorUI.SetActive(false);
     }
 }
