@@ -19,7 +19,6 @@ public class UserData
         this.ID = ID;
         this.password = password;
     }
-
     public UserData(string userName, string ID, string password)
     {
         this.name = userName;
@@ -28,10 +27,5 @@ public class UserData
 
         this.cash = 115000;
         this.balance = 85000;
-    }
-
-    public UserData()
-    {
-
     }
 }
